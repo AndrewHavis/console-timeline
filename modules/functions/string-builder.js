@@ -20,7 +20,7 @@ module.exports.buildString = (event, callback) => {
     let followersCount = event.user.followers_count; // The number of followers
     let followsCount = event.user.friends_count; // The number of follows
     let isVerified = event.user.verified; // Is the user verified by Twitter?
-    let verified = ''; // We'll set this to the string 'Verified' if the user is verified
+    let verified = ''; // We'll set this to the string '✓ Verified' if the user is verified
 
     // Tweet information
     let tweet = event.text; // The tweet text
