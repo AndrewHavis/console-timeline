@@ -1,3 +1,5 @@
+'use strict';
+
 // Twitter API functions
 
 // Import app credentials for Twitter
