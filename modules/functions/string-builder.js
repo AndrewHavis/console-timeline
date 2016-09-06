@@ -21,7 +21,10 @@ module.exports.buildString = (event, callback) => {
     let tweetLocation = null; // Default to no location
 
     // If the tweet is geotagged, let's try getting the tweet's location
-    if (event.geo !== null) {
+    if (event.place !== null) {
+        tweetLocation = event.place.full_name; // Get the place name from the place object if it's there
+    }
+    else if (event.geo !== null) {
         getPlace.getPlaceName(event.geo.coordinates[0], event.geo.coordinates[1], (placeName) => {
             tweetLocation = placeName; // Try to get the place name from reverse geocoding the latitude and longitude
         });

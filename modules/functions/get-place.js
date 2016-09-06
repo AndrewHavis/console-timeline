@@ -8,6 +8,6 @@ const twitter = require('./twitter-api');
 // Get the place name from Twitter's reverse geocoding facility
 module.exports.getPlaceName = (lat, long, callback) => {
     twitter.twitterClient.get('geo/reverse_geocode', {lat: lat, long: long}, (error, places, response) => {
-       console.log(places.result.places[0].full_name);
+        return callback(places.result.places[0].full_name);
     });
 };
