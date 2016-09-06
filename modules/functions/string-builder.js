@@ -52,10 +52,10 @@ module.exports.buildString = (event, callback) => {
 
     // We'll add the location onto the last line if we have it
     if (tweetLocation !== null) {
-        result += chalk.green('Sent at ' + timestamp + chalk.cyan(' from ' + tweetLocation + chalk.white(' by ' + source)));
+        result += chalk.green('Sent at ' + timestamp) + chalk.cyan(' from ' + tweetLocation) + chalk.white(' by ' + source);
     }
     else {
-        result += chalk.green('Sent at ' + timestamp + chalk.white(' by ' + source));
+        result += chalk.green('Sent at ' + timestamp) + chalk.white(' by ' + source);
     }
 
     // Now return our resulting string via the callback
