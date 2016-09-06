@@ -13,12 +13,25 @@ const getPlace = require('./get-place');
 module.exports.buildString = (event, callback) => {
 
     // First of all, let's gather all of the information that we need
+
+    // User information
     let username = event.user.name; // Twitter name (e.g. Andrew Havis)
     let handle = '@' + event.user.screen_name; // Twitter handle (e.g. AndrewHavis) - note we prefix this with an at sign
+    let followersCount = event.user.followers_count; // The number of followers
+    let followsCount = event.user.friends_count; // The number of follows
+    let isVerified = event.user.verified; // Is the user verified by Twitter?
+    let verified = ''; // We'll set this to the string 'Verified' if the user is verified
+
+    // Tweet information
     let tweet = event.text; // The tweet text
     let timestamp = event.created_at; // The timestamp of the tweet (i.e. the exact time it was sent)
     let source = stripTags(event.source); // The name of the application that sent the tweet (e.g. Twitter for Android)
     let tweetLocation = null; // Default to no location
+
+    // If the user is verified, let's say so
+    if (!!isVerified) {
+        verified = chalk.cyan(chalk.bold('✓ Verified'));
+    }
 
     // If the tweet is geotagged, let's try getting the tweet's location
     if (event.place !== null) {
@@ -33,7 +46,8 @@ module.exports.buildString = (event, callback) => {
     // Now concatenate this information, using Chalk to make it colourful
     let result = '';
     result += chalk.white('-------------------------------------------------') + '\n'; // Separator
-    result += chalk.green(username + ' ' + chalk.white('(' + handle + ')')) + '\n'; // Username and Twitter handle
+    result += chalk.green(chalk.bold(username)) + ' ' + chalk.white('(' + handle + ')') + ' '; // Username and Twitter handle
+    result += chalk.green(followersCount + ' followers ') + chalk.cyan(followsCount + ' following ') + verified + '\n'; // Followers, follows and verified status
     result += chalk.cyan(tweet) + '\n'; // The tweet text
 
     // We'll add the location onto the last line if we have it
