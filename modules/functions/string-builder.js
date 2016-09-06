@@ -47,7 +47,7 @@ module.exports.buildString = (event, callback) => {
     let result = '';
     result += chalk.white('-------------------------------------------------') + '\n'; // Separator
     result += chalk.green(chalk.bold(username)) + ' ' + chalk.white('(' + handle + ')') + ' '; // Username and Twitter handle
-    result += chalk.green(followersCount + ' followers ') + chalk.cyan(followsCount + ' following ') + verified + '\n'; // Followers, follows and verified status
+    result += chalk.green(followersCount + ' followers ') + chalk.white(followsCount + ' following ') + verified + '\n'; // Followers, follows and verified status
     result += chalk.cyan(tweet) + '\n'; // The tweet text
 
     // We'll add the location onto the last line if we have it
