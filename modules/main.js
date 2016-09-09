@@ -1,4 +1,4 @@
 'use strict';
 
-// Import Twitter API
-require('./functions/twitter-api');
+// Import server
+require('./functions/server');
