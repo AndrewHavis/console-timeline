@@ -2,8 +2,11 @@
 
 // Used to receive tweets via Socket.io
 
+// Get our host name
+const hostname = window.location.protocol + '//' + window.location.host;
+
 // Declare constants
-const socket = io('http://localhost:8585');
+const socket = io(hostname);
 
 // Get the div element that we're adding the tweet to, and add an ul tag inside it
 let tweetsDiv = document.getElementById('tweets');
