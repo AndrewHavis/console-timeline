@@ -16,6 +16,5 @@ socket.on('tweet', (data) => {
     let tweet = document.createTextNode(data.text);
     let tweetElement = document.createElement('li');
     tweetElement.appendChild(tweet);
-    console.log(tweetElement);
     tweetsList.appendChild(tweetElement);
 });
