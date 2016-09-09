@@ -10,14 +10,20 @@ const socket = io(hostname);
 
 // Get the div element that we're adding the tweet to, and add an ul tag inside it
 let tweetsDiv = document.getElementById('tweets');
-let tweetsList = document.createElement('ul');
-tweetsDiv.appendChild(tweetsList);
 
 socket.on('tweet', (data) => {
     // Add a li to the ul tag with our tweet
+
+    // Output the tweet object to the console for reference
     console.log(data);
-    let tweet = document.createTextNode(data.text);
-    let tweetElement = document.createElement('li');
-    tweetElement.appendChild(tweet);
-    tweetsList.appendChild(tweetElement);
+
+    // Add a section tag at the top of tweetsDiv, so we get the tweets with the most recent at the top
+    let tweetSection = document.createElement('section');
+    tweetSection.setAttribute('id', 'tweet' + data.id_str);
+    tweetsDiv.insertBefore(tweetSection, tweetsDiv.childNodes[0]);
+
+    formatTweet(data, tweetSection, (tweetElement) => {
+        console.log(tweetElement);
+    });
+
 });
