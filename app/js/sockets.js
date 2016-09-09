@@ -3,7 +3,7 @@
 // Used to receive tweets via Socket.io
 
 // Declare constants
-const socket = io('http://localhost:8590');
+const socket = io('http://localhost:8585');
 
 // Get the div element that we're adding the tweet to, and add an ul tag inside it
 let tweetsDiv = document.getElementById('tweets');

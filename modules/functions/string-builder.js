@@ -9,8 +9,8 @@ const stripTags = require('striptags');
 // Import our get-place script
 const getPlace = require('./get-place');
 
-// Set up our buildString function
-module.exports.buildString = (event, callback) => {
+// Set up our buildTweetString function
+module.exports.buildTweetString = (event, callback) => {
 
     // First of all, let's gather all of the information that we need
 
@@ -59,6 +59,25 @@ module.exports.buildString = (event, callback) => {
     }
 
     // Now return our resulting string via the callback
+    return callback(result);
+
+};
+
+// Also set up a generic buildString function
+module.exports.buildString = (text, useSeparators, callback) => {
+
+    // Initiate our result string
+    let result = '';
+
+    // Add a separator if useSeparators is true
+    if (!!useSeparators) {
+        result += chalk.white('-------------------------------------------------') + '\n';
+    }
+
+    // Now add in our string
+    result += chalk.cyan(text);
+
+    // Return the string via the callback
     return callback(result);
 
 };

@@ -22,9 +22,44 @@ const server = require('http').Server(app);
 const io = socketIo(server);
 app.use('/', express.static(__dirname + '/../../app/'));
 
-// Start up our server on port 8590
-server.listen(8590);
-console.log('Server started on http://localhost:8590');
+// Initiate the user counter and some strings to make our messages grammatical
+let userCount = 0;
+let thirdPerson = 'are'; // This will be 'is' if there's only one user
+let s = 's'; // This will be an empty string if there's only one user
+
+// Set up socket.io's connect and disconnect events
+io.on('connection', (socket) => {
+    userCount++;
+    if (userCount === 1) {
+        thirdPerson = 'is';
+        s = '';
+    }
+    else {
+        thirdPerson = 'are';
+        s = 's';
+    }
+    stringBuilder.buildString('A user has connected: there ' + thirdPerson + ' now ' + userCount + ' user' + s + '.', true, (displayString) => {
+        console.log(displayString);
+    });
+});
+io.on('disconnect', (socket) => {
+    userCount--;
+    if (userCount === 1) {
+        thirdPerson = 'is';
+        s = '';
+    }
+    else {
+        thirdPerson = 'are';
+        s = 's';
+    }
+    stringBuilder.buildString('A user has disconnected: there ' + thirdPerson + ' now ' + userCount + ' user' + s + '.', true, (displayString) => {
+        console.log(displayString);
+    });
+});
+
+// Start up our server on port 8585
+server.listen(8585);
+console.log('Server started on http://localhost:8585');
 
 // Now stream the home timeline to the console, and to a web page using Express and Socket.io
 module.exports.streamTimeline = twitterClient.stream('user', {with: 'followings'}, (stream) => {
@@ -33,7 +68,7 @@ module.exports.streamTimeline = twitterClient.stream('user', {with: 'followings'
         if (typeof event.text !== 'undefined' && typeof event.user !== 'undefined') {
 
             // Build and display the string in the console
-            stringBuilder.buildString(event, (displayString) => {
+            stringBuilder.buildTweetString(event, (displayString) => {
                 console.log(displayString);
             });
 
