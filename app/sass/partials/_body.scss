@@ -1,2 +1,7 @@
 @import 'columns';
 @import 'headings';
+
+section[id^="tweet"] {
+    width: 50%;
+    margin: 0 auto;
+}

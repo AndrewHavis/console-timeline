@@ -3,14 +3,14 @@
 // Used to receive tweets via Socket.io
 
 define(["./tweets"], () => {
-   
-   let getLiveTweets = () => {
-       
-        // Get our host name
-        const hostname = window.location.protocol + '//' + window.location.host;
 
-        // Declare constants
-        const socket = io(hostname); // io is defined by Socket.io, which is loaded directly on the page rather than via RequireJS
+    // Get our host name
+    const hostname = window.location.protocol + '//' + window.location.host;
+
+    // Declare constants
+    const socket = io(hostname); // io is defined by Socket.io, which is loaded directly on the page rather than via RequireJS
+
+    let getLiveTweets = () => {
 
         // Get the div element that we're adding the tweet to, and add an ul tag inside it
         let tweetsDiv = document.getElementById('tweets');
