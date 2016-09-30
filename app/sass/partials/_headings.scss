@@ -1,0 +1,12 @@
+@mixin heading($size) {
+    text-align: center;
+    font-size: $size;
+}
+
+h1 {
+    @include heading(18pt);
+}
+
+h2 {
+    @include heading(14pt);
+}

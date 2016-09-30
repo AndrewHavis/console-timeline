@@ -9,18 +9,32 @@ const credentials = require('../../credentials.json').twitter;
 const Twitter = require('twitter');
 const express = require('express');
 const socketIo = require('socket.io');
+const fse = require('fs-extra');
 
 // Import Twitter credentials
 const twitterClient = new Twitter(credentials);
 
 // Import string builder
-const stringBuilder = require('./string-builder');
+const stringBuilder = require(__dirname + '/../utilities/string-builder');
 
-// Create an Express server and attach socket.io to it
+// Compile Pug and SASS files
+const compile = require(__dirname + '/compile');
+fse.mkdirp(__dirname + '/../../public/css', (err) => {
+    if (!!err) console.error(err);
+}); // Create the /public and /public/css directories
+compile.compileSourceFiles(__dirname + '/../../app', 'main.scss');
+
+// Copy JS files
+fse.copy(__dirname + '/../../app/js', __dirname + '/../../public/js', (err) => {
+    if (!!err) console.error(err);
+});
+
+// Create an Express server and attach socket.io and Bower to it
 const app = express();
 const server = require('http').Server(app);
 const io = socketIo(server);
-app.use('/', express.static(__dirname + '/../../app/'));
+app.use('/', express.static(__dirname + '/../../public/'));
+app.use('/lib', express.static(__dirname + '/../../bower_components'));
 
 // Initiate the user counter and some strings to make our messages grammatical
 let userCount = 0;

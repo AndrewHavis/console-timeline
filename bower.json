@@ -1,0 +1,31 @@
+{
+  "name": "console-timeline",
+  "description": "An application to show a user's home timeline on Twitter in a console or terminal",
+  "main": "app.js",
+  "authors": [
+    "Andrew Havis"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "twitter",
+    "cli",
+    "command",
+    "line",
+    "terminal",
+    "console"
+  ],
+  "homepage": "https://github.com/AndrewHavis/console-timeline",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "requirejs": "^2.3.2",
+    "angular": "^1.5.8",
+    "bootstrap": "^3.3.7"
+  }
+}

@@ -1,0 +1,15 @@
+.column {
+    margin: 0 auto;
+}
+
+.column-left {
+    @extend .column;
+}
+
+.column-middle {
+    @extend .column;
+}
+
+.column-right {
+    @extend .column;
+}
