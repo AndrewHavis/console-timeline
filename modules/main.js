@@ -1,4 +1,7 @@
 'use strict';
 
-// Import server
-require('./functions/server');
+// Import server scripts
+require('./server/server');
+require('./server/sockets');
+require('./server/twitter');
+

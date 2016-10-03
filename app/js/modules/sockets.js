@@ -2,7 +2,7 @@
 
 // Used to receive tweets via Socket.io
 
-define(["./tweets"], () => {
+define(["jquery", "./tweets"], () => {
 
     // Get our host name
     const hostname = window.location.protocol + '//' + window.location.host;
@@ -20,11 +20,12 @@ define(["./tweets"], () => {
 
             // Add a section tag at the top of tweetsDiv, so we get the tweets with the most recent at the top
             let tweetSection = document.createElement('section');
-            tweetSection.setAttribute('id', eventName + data.id_str);
-            containerElement.insertBefore(tweetSection, containerElement.childNodes[0]);
+            $(tweetSection).attr('id', eventName + data.id_str);
+            $(containerElement).prepend(tweetSection);
 
             formatTweet(data, tweetSection, (tweetElement) => {
                 console.log(tweetElement);
+                $(tweetSection).prepend(tweetElement);
             });
 
         });

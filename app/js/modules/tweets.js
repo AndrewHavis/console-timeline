@@ -30,7 +30,7 @@ define(["jquery"], () => {
         // Go through each tweet and format it accordingly
         $.each(tweetData, (key, tweet) => {
             let tweetSection = document.createElement('section');
-            tweetSection.setAttribute('id', sectionPrefix + tweet.id_str);
+            $(tweetSection).attr('id', sectionPrefix + tweet.id_str);
             formatTweet(tweet, tweetSection, (tweetElement) => {
                 $(tweetSection).prepend(tweetElement);
             });
