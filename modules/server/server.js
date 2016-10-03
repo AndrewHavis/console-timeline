@@ -6,9 +6,6 @@
 const express = require('express');
 const fse = require('fs-extra');
 
-// Import string builder
-const stringBuilder = require(__dirname + '/../utilities/string-builder');
-
 // Compile Pug and SASS files
 const compile = require(__dirname + '/../utilities/compile');
 fse.mkdirp(__dirname + '/../../public/css', (err) => {
@@ -34,5 +31,3 @@ module.exports.server = server;
 // Start up our server on port 8585
 server.listen(8585);
 console.log('Server started on http://localhost:8585');
-
-
