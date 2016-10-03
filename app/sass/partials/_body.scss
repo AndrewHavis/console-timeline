@@ -1,7 +1,19 @@
 @import 'columns';
 @import 'headings';
 
-section[id^="tweet"] {
+.tweet {
     width: 50%;
     margin: 0 auto;
+}
+
+section[id^="tweet"] {
+    @extend .tweet;
+}
+
+section[id^="userTweet"] {
+    @extend .tweet;
+}
+
+section[id^="userMention"] {
+    @extend .tweet;
 }

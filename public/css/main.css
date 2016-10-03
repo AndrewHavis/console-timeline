@@ -9,6 +9,6 @@ h2 {
   text-align: center;
   font-size: 14pt; }
 
-section[id^="tweet"] {
+.tweet, section[id^="tweet"], section[id^="userTweet"], section[id^="userMention"] {
   width: 50%;
   margin: 0 auto; }

@@ -75,24 +75,79 @@ io.on('disconnect', (socket) => {
 server.listen(8585);
 console.log('Server started on http://localhost:8585');
 
-// Now stream the home timeline to the console, and to a web page using Express and Socket.io
-module.exports.streamTimeline = twitterClient.stream('user', {with: 'followings'}, (stream) => {
-    stream.on('data', (event) => {
-        // Filter out events that aren't tweets by looking for objects where the 'text' property is undefined
-        if (typeof event.text !== 'undefined' && typeof event.user !== 'undefined') {
+const emitEvent = (eventName, event) => {
+    // Filter out events that aren't tweets by looking for objects where the 'text' property is undefined
+    if (typeof event.text !== 'undefined' && typeof event.user !== 'undefined') {
 
-            // Build and display the string in the console
+        // Build and display the string in the console if it is from the user's home timeline
+        if (eventName === 'tweet') {
             stringBuilder.buildTweetString(event, (displayString) => {
                 console.log(displayString);
             });
-
-            // Send the tweet event to the browser
-            io.emit('tweet', event);
-
         }
+
+        io.emit(eventName, event);
+
+        // If the tweet contains the user's Twitter handle, also emit a separate event to add it to the mentions column
+        if (event.text.indexOf(event.user.screen_name) > -1) {
+            io.emit('userMention', event);
+        }
+
+    }
+};
+
+// Now stream the home timeline to the console, and to a web page using Express and Socket.io
+module.exports.streamTimeline = twitterClient.stream('user', {with: 'followings'}, (stream) => {
+    stream.on('data', (event) => {
+
+        emitEvent('tweet', event);
+
     });
     stream.on('error', (e) => {
         throw e;
+    });
+});
+
+// Let's also get a stream of the user's own tweets
+module.exports.streamUserTweets = twitterClient.stream('user', {with: 'user'}, (stream) => {
+    stream.on('data', (event) => {
+        emitEvent('userTweet', event);
+    });
+    stream.on('error', (e) => {
+        throw e;
+    });
+});
+
+// Get the user's previous tweets and mentions: we will display these when the page loads so we don't have blank columns
+app.use('/api/twitter/user/home', (req, res) => {
+    twitterClient.get('statuses/home_timeline', (error, tweets, response) => {
+        if (error) {
+            throw error;
+        }
+        else {
+            res.json(tweets);
+        }
+    });
+});
+app.use('/api/twitter/user/tweets', (req, res) => {
+    // Limit this to 30 tweets to speed it up a bit
+    twitterClient.get('statuses/user_timeline', {user: credentials.screen_name, count: 30, include_rts: 1}, (error, tweets, response) => {
+       if (error) {
+           throw error;
+       }
+       else {
+           res.json(tweets);
+       }
+    });
+});
+app.use('/api/twitter/user/mentions', (req, res) => {
+    twitterClient.get('statuses/mentions_timeline', (error, tweets, response) => {
+        if (error) {
+            throw error;
+        }
+        else {
+            res.json(tweets);
+        }
     });
 });
 
