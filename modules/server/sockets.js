@@ -1,7 +1,8 @@
 'use strict';
 
-// Import server
+// Import server and Twitter API
 const server = require('./server');
+const twitter = require('./twitter');
 
 // Import string builder
 const stringBuilder = require(__dirname + '/../utilities/string-builder');
@@ -61,7 +62,7 @@ module.exports.emitEvent = (eventName, event) => {
         io.emit(eventName, event);
 
         // If the tweet contains the user's Twitter handle, also emit a separate event to add it to the mentions column
-        if (event.text.indexOf(event.user.screen_name) > -1) {
+        if (event.text.indexOf(twitter.twitterHandle) > -1) {
             io.emit('userMention', event);
         }
 

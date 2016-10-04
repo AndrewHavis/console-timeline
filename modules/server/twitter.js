@@ -68,5 +68,6 @@ server.express.use('/api/twitter/user/mentions', (req, res) => {
     });
 });
 
-// Export the Twitter client so other functions can use it
+// Export the Twitter client and the user's Twitter handle so other functions can use them
 module.exports.twitterClient = twitterClient;
+module.exports.twitterHandle = credentials.screen_name;
