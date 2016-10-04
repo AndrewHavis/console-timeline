@@ -3,8 +3,9 @@
 // Import server
 const server = require('./server');
 
-// Import string builder
+// Import string builder and grammar module
 const stringBuilder = require(__dirname + '/../utilities/string-builder');
+const grammar = require(__dirname + '/../utilities/grammar');
 
 // Set up Socket.io
 const socketIo = require('socket.io');
@@ -13,35 +14,17 @@ const io = socketIo(httpServer);
 
 // Initiate the user counter and some strings to make our messages grammatical
 let userCount = 0;
-let thirdPerson = 'are'; // This will be 'is' if there's only one user
-let s = 's'; // This will be an empty string if there's only one user
 
 // Set up socket.io's connect and disconnect events
 io.on('connection', (socket) => {
     userCount++;
-    if (userCount === 1) {
-        thirdPerson = 'is';
-        s = '';
-    }
-    else {
-        thirdPerson = 'are';
-        s = 's';
-    }
-    stringBuilder.buildString('A user has connected: there ' + thirdPerson + ' now ' + userCount + ' user' + s + '.', true, (displayString) => {
-        console.log(displayString);
+    socket.on('disconnect', () => {
+        userCount--;
+        stringBuilder.buildString('A user has disconnected: there ' + grammar.getThirdPerson(userCount) + ' now ' + userCount + ' user' + grammar.getPlural(userCount) + '.', true, (displayString) => {
+            console.log(displayString);
+        });
     });
-});
-io.on('disconnect', (socket) => {
-    userCount--;
-    if (userCount === 1) {
-        thirdPerson = 'is';
-        s = '';
-    }
-    else {
-        thirdPerson = 'are';
-        s = 's';
-    }
-    stringBuilder.buildString('A user has disconnected: there ' + thirdPerson + ' now ' + userCount + ' user' + s + '.', true, (displayString) => {
+    stringBuilder.buildString('A user has connected: there ' + grammar.getThirdPerson(userCount) + ' now ' + userCount + ' user' + grammar.getPlural(userCount) + '.', true, (displayString) => {
         console.log(displayString);
     });
 });
@@ -62,6 +45,8 @@ module.exports.emitEvent = (eventName, event) => {
 
         // If the tweet contains the user's Twitter handle, also emit a separate event to add it to the mentions column
         if (event.text.indexOf(event.user.screen_name) > -1) {
+            console.log(event.text);
+            console.log(event.user.screen_name);
             io.emit('userMention', event);
         }
 
